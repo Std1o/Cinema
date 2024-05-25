@@ -34,7 +34,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Destination<RootGraph>(start = true)
 @Composable
-fun MainScreen(navigator: DestinationsNavigator, modifier: Modifier) {
+fun MoviesScreen(navigator: DestinationsNavigator, modifier: Modifier) {
     val viewModel = hiltViewModel<MoviesViewModel>()
     val movies by viewModel.uiState.collectAsState()
     LazyColumn(modifier = Modifier.fillMaxSize().padding(top = 30.dp)) {
