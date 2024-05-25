@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -59,29 +61,31 @@ fun MovieScreen(movie: Movie) {
                     }
                 })
             }
-            Row {
+            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                Row {
+                    Text(
+                        text = movie.name,
+                        fontSize = 20.sp,
+                        modifier = Modifier.padding(top = 8.dp),
+                        color = Color.White,
+                    )
+                    Text(
+                        text = "• ${movie.year}",
+                        modifier = Modifier.padding(top = 10.dp, start = 8.dp),
+                        color = Color.Gray,
+                    )
+                }
                 Text(
-                    text = movie.name,
-                    fontSize = 20.sp,
-                    modifier = Modifier.padding(top = 8.dp),
-                    color = Color.White,
+                    text = movie.genres.joinToString { it.name },
+                    color = Color.Gray,
+                    fontSize = 13.sp
                 )
                 Text(
-                    text = "• ${movie.year}",
-                    modifier = Modifier.padding(top = 10.dp, start = 8.dp),
-                    color = Color.Gray,
+                    text = movie.description,
+                    color = Color.White,
+                    modifier = Modifier.padding(top = 10.dp)
                 )
             }
-            Text(
-                text = movie.genres.joinToString { it.name },
-                color = Color.Gray,
-                fontSize = 13.sp
-            )
-            Text(
-                text = movie.description,
-                color = Color.White,
-                modifier = Modifier.padding(top = 10.dp)
-            )
         }
 
         DisposableEffect(key1 = Unit, effect = {
