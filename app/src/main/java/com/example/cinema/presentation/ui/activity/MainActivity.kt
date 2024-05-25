@@ -1,4 +1,4 @@
-package com.example.cinema
+package com.example.cinema.presentation.ui.activity
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,7 +11,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.cinema.ui.theme.CinemaTheme
+import androidx.navigation.compose.rememberNavController
+import com.example.cinema.presentation.ui.screens.MainScreen
+import com.example.cinema.presentation.ui.theme.CinemaTheme
+import com.ramcosta.composedestinations.utils.rememberDestinationsNavigator
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,29 +22,12 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CinemaTheme {
+                val navController = rememberNavController()
+                val navigator = navController.rememberDestinationsNavigator()
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    MainScreen(navigator = navigator, modifier = Modifier.padding(innerPadding))
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    CinemaTheme {
-        Greeting("Android")
     }
 }
