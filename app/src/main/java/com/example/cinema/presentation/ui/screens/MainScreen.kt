@@ -1,6 +1,7 @@
 package com.example.cinema.presentation.ui.screens
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -36,7 +37,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 fun MainScreen(navigator: DestinationsNavigator, modifier: Modifier) {
     val viewModel = hiltViewModel<MoviesViewModel>()
     val movies by viewModel.uiState.collectAsState()
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
+    LazyColumn(modifier = Modifier.fillMaxSize().padding(top = 30.dp)) {
         iTems(movies, key = { it }) { movie ->
             val shape = RoundedCornerShape(5.dp)
             Card(
@@ -49,7 +50,7 @@ fun MainScreen(navigator: DestinationsNavigator, modifier: Modifier) {
                 Column(
                     modifier = Modifier
                         .padding(vertical = 10.dp, horizontal = 16.dp)
-                        .height(200.dp)
+                        .height(300.dp)
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(10.dp))
                 ) {
@@ -58,21 +59,38 @@ fun MainScreen(navigator: DestinationsNavigator, modifier: Modifier) {
                         contentDescription = "Translated description of what the image contains",
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(150.dp),
+                            .height(150.dp)
+                            .clip(RoundedCornerShape(10.dp)),
                         contentScale = ContentScale.FillWidth
                     )
-                    Text(
-                        text = movie.name,
-                        modifier = Modifier.padding(vertical = 8.dp),
-                        fontSize = 20.sp,
-                        color = Color.White,
-                        style = TextStyle(
-                            shadow = Shadow(
-                                Color.Black,
-                                Offset(3.0f, 4.95f),
-                                1.0f
+                    Row {
+                        Text(
+                            text = movie.name,
+                            modifier = Modifier.padding(top = 8.dp),
+                            fontSize = 20.sp,
+                            color = Color.White,
+                            style = TextStyle(
+                                shadow = Shadow(
+                                    Color.Black,
+                                    Offset(3.0f, 4.95f),
+                                    1.0f
+                                )
                             )
                         )
+                        Text(
+                            text = "• ${movie.year}",
+                            modifier = Modifier.padding(top = 10.dp, start = 8.dp),
+                            color = Color.Gray,
+                        )
+                    }
+                    Text(
+                        text = movie.genres.joinToString { it.name },
+                        color = Color.Gray,
+                    )
+                    Text(
+                        text = movie.shortDescription ?: movie.description,
+                        color = Color.White,
+                        fontSize = 12.sp
                     )
                 }
             }
