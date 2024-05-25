@@ -1,5 +1,6 @@
 package com.example.cinema.presentation.ui.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,12 +30,13 @@ import com.example.cinema.common.iTems
 import com.example.cinema.presentation.viewmodel.MoviesViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
+import com.ramcosta.composedestinations.generated.destinations.MovieScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 
 @Destination<RootGraph>(start = true)
 @Composable
-fun MoviesScreen(navigator: DestinationsNavigator, modifier: Modifier) {
+fun MoviesScreen(navigator: DestinationsNavigator) {
     val viewModel = hiltViewModel<MoviesViewModel>()
     val movies by viewModel.uiState.collectAsState()
     LazyColumn(modifier = Modifier.fillMaxSize().padding(top = 30.dp)) {
@@ -46,6 +48,9 @@ fun MoviesScreen(navigator: DestinationsNavigator, modifier: Modifier) {
                 modifier = Modifier
                     .padding(vertical = 10.dp, horizontal = 16.dp)
                     .fillMaxWidth()
+                    .clickable {
+                        navigator.navigate(MovieScreenDestination())
+                    }
             ) {
                 Column(
                     modifier = Modifier

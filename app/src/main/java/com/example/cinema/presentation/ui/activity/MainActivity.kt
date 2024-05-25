@@ -11,6 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.example.cinema.presentation.ui.screens.MoviesScreen
 import com.example.cinema.presentation.ui.theme.CinemaTheme
+import com.ramcosta.composedestinations.DestinationsNavHost
+import com.ramcosta.composedestinations.generated.NavGraphs
 import com.ramcosta.composedestinations.utils.rememberDestinationsNavigator
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,7 +26,7 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 val navigator = navController.rememberDestinationsNavigator()
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MoviesScreen(navigator = navigator, modifier = Modifier.padding(innerPadding))
+                    DestinationsNavHost(navGraph = NavGraphs.root)
                 }
             }
         }
