@@ -49,7 +49,7 @@ fun MoviesScreen(navigator: DestinationsNavigator) {
                     .padding(vertical = 10.dp, horizontal = 16.dp)
                     .fillMaxWidth()
                     .clickable {
-                        navigator.navigate(MovieScreenDestination())
+                        navigator.navigate(MovieScreenDestination(movie))
                     }
             ) {
                 Column(
