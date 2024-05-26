@@ -18,6 +18,8 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -32,11 +34,17 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.cinema.common.Constants.ADMIN_EMAIL
+import com.example.cinema.common.Constants.CLIENT_EMAIL
 import com.example.cinema.common.Constants.PASS
 import com.example.cinema.presentation.ui.navigation.AuthGraph
 import com.example.cinema.presentation.ui.theme.Purple80
+import com.example.cinema.presentation.viewmodel.LoginViewModel
+import com.example.cinema.presentation.viewmodel.MoviesViewModel
+import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.generated.NavGraphs
 import com.ramcosta.composedestinations.generated.destinations.SignUpScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
@@ -46,82 +54,90 @@ import kotlinx.coroutines.launch
 fun LoginScreen(navigator: DestinationsNavigator) {
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
-    Scaffold(
-        snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState)
-        }) { contentPadding ->
-        Box(modifier = Modifier.fillMaxSize()) {
-            ClickableText(
-                text = AnnotatedString("Зарегистрироваться"),
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(40.dp)
-                    .padding(contentPadding),
-                onClick = {
-                    navigator.navigate(SignUpScreenDestination())
-                },
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = FontFamily.Default,
-                    textDecoration = TextDecoration.Underline,
-                    color = Purple80
-                )
-            )
-        }
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(20.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+    val viewModel = hiltViewModel<LoginViewModel>()
 
-            val email = remember { mutableStateOf(TextFieldValue()) }
-            val password = remember { mutableStateOf(TextFieldValue()) }
+    val isUserAuthorized by viewModel.isUserAuthorized.collectAsState()
 
-            Text(
-                text = "Cinema",
-                style = TextStyle(fontSize = 40.sp, fontFamily = FontFamily.Cursive)
-            )
-
-            Spacer(modifier = Modifier.height(20.dp))
-            TextField(
-                label = { Text(text = "E-mail") },
-                value = email.value,
-                onValueChange = { email.value = it })
-
-            Spacer(modifier = Modifier.height(20.dp))
-            TextField(
-                label = { Text(text = "Пароль") },
-                value = password.value,
-                visualTransformation = PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                onValueChange = { password.value = it })
-
-            Spacer(modifier = Modifier.height(20.dp))
-            Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
-                Button(
-                    onClick = {
-                        if (password.value.text == PASS
-                            && (email.value.text == ADMIN_EMAIL || email.value.text == ADMIN_EMAIL)
-                        ) {
-                            navigator.popBackStack()
-                        } else {
-                            scope.launch {
-                                snackbarHostState.showSnackbar("Неверный логин или пароль")
-                            }
-                        }
-                    },
-                    shape = RoundedCornerShape(50.dp),
+    if (!isUserAuthorized) {
+        Scaffold(
+            snackbarHost = {
+                SnackbarHost(hostState = snackbarHostState)
+            }) { contentPadding ->
+            Box(modifier = Modifier.fillMaxSize()) {
+                ClickableText(
+                    text = AnnotatedString("Зарегистрироваться"),
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp)
-                ) {
-                    Text(text = "Войти")
-                }
+                        .align(Alignment.BottomCenter)
+                        .padding(40.dp)
+                        .padding(contentPadding),
+                    onClick = {
+                        navigator.navigate(SignUpScreenDestination())
+                    },
+                    style = TextStyle(
+                        fontSize = 14.sp,
+                        fontFamily = FontFamily.Default,
+                        textDecoration = TextDecoration.Underline,
+                        color = Purple80
+                    )
+                )
             }
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(20.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
 
-            Spacer(modifier = Modifier.height(20.dp))
+                val email = remember { mutableStateOf(TextFieldValue()) }
+                val password = remember { mutableStateOf(TextFieldValue()) }
+
+                Text(
+                    text = "Cinema",
+                    style = TextStyle(fontSize = 40.sp, fontFamily = FontFamily.Cursive)
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+                TextField(
+                    label = { Text(text = "E-mail") },
+                    value = email.value,
+                    onValueChange = { email.value = it })
+
+                Spacer(modifier = Modifier.height(20.dp))
+                TextField(
+                    label = { Text(text = "Пароль") },
+                    value = password.value,
+                    visualTransformation = PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    onValueChange = { password.value = it })
+
+                Spacer(modifier = Modifier.height(20.dp))
+                Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
+                    Button(
+                        onClick = {
+                            if (password.value.text == PASS
+                                && (email.value.text == ADMIN_EMAIL || email.value.text == CLIENT_EMAIL)
+                            ) {
+                                viewModel.setUserAuthorized(true)
+                                viewModel.checkUserAuthorized()
+                            } else {
+                                scope.launch {
+                                    snackbarHostState.showSnackbar("Неверный логин или пароль")
+                                }
+                            }
+                        },
+                        shape = RoundedCornerShape(50.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp)
+                    ) {
+                        Text(text = "Войти")
+                    }
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+            }
         }
+    } else {
+        DestinationsNavHost(navGraph = NavGraphs.root)
     }
 }

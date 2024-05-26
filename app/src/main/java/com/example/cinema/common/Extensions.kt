@@ -1,8 +1,12 @@
 package com.example.cinema.common
 
+import android.content.Context
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.runtime.Composable
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 
 // extension находится в том же файле где и items с аргументом count,
 // даже импорт иногда не помогет
@@ -19,3 +23,5 @@ inline fun <T> LazyListScope.iTems(
 ) {
     itemContent(items[it])
 }
+
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")

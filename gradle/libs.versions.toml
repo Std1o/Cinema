@@ -17,6 +17,7 @@ logging-interceptor = "5.0.0-alpha.2"
 coroutines = "1.7.1"
 coil = "2.4.0"
 exoplayer = "2.18.1"
+datastore-preferences = "1.1.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -45,6 +46,7 @@ coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", ve
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 exoplayer = { module = "com.google.android.exoplayer:exoplayer", version.ref = "exoplayer" }
+datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore-preferences" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
