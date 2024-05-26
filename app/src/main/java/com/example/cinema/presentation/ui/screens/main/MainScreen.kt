@@ -1,7 +1,9 @@
 package com.example.cinema.presentation.ui.screens.main
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.example.cinema.presentation.ui.screens.main.BottomBar
 import com.ramcosta.composedestinations.DestinationsNavHost
@@ -19,7 +21,8 @@ fun MainScreen() {
     ) { innerPadding ->
         DestinationsNavHost(
             navController = navController,
-            navGraph = NavGraphs.root
+            navGraph = NavGraphs.root,
+            modifier = Modifier.padding(innerPadding)
         )
     }
 }
