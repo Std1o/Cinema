@@ -7,10 +7,15 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.cinema.presentation.ui.screens.MoviesScreen
 import com.example.cinema.presentation.ui.theme.CinemaTheme
+import com.example.cinema.presentation.viewmodel.LoginViewModel
+import com.example.cinema.presentation.viewmodel.MainActivityViewModel
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.generated.NavGraphs
 import com.ramcosta.composedestinations.utils.rememberDestinationsNavigator
@@ -23,10 +28,14 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CinemaTheme {
-                val navController = rememberNavController()
-                val navigator = navController.rememberDestinationsNavigator()
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    DestinationsNavHost(navGraph = NavGraphs.authRoute)
+                    val viewModel = hiltViewModel<MainActivityViewModel>()
+                    val isUserAuthorized by viewModel.isUserAuthorized.collectAsState()
+                    if (isUserAuthorized) {
+                        DestinationsNavHost(navGraph = NavGraphs.root)
+                    } else {
+                        DestinationsNavHost(navGraph = NavGraphs.authRoute)
+                    }
                 }
             }
         }
