@@ -31,30 +31,10 @@ import androidx.compose.ui.unit.sp
 import com.example.cinema.presentation.ui.navigation.AuthGraph
 import com.example.cinema.presentation.ui.theme.Purple80
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.generated.destinations.MovieScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.SignUpScreenDestination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
-@Destination<AuthGraph>(start = true)
+@Destination<AuthGraph>()
 @Composable
-fun LoginScreen(navigator: DestinationsNavigator) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        ClickableText(
-            text = AnnotatedString("Зарегистрироваться"),
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(40.dp),
-            onClick = {
-                navigator.navigate(SignUpScreenDestination())
-            },
-            style = TextStyle(
-                fontSize = 14.sp,
-                fontFamily = FontFamily.Default,
-                textDecoration = TextDecoration.Underline,
-                color = Purple80
-            )
-        )
-    }
+fun SignUpScreen() {
     Column(
         modifier = Modifier.fillMaxSize().padding(20.dp),
         verticalArrangement = Arrangement.Center,
@@ -63,8 +43,9 @@ fun LoginScreen(navigator: DestinationsNavigator) {
 
         val email = remember { mutableStateOf(TextFieldValue()) }
         val password = remember { mutableStateOf(TextFieldValue()) }
+        val confirmPassword = remember { mutableStateOf(TextFieldValue()) }
 
-        Text(text = "Cinema", style = TextStyle(fontSize = 40.sp, fontFamily = FontFamily.Cursive))
+        Text(text = "Регистрация", style = TextStyle(fontSize = 20.sp))
 
         Spacer(modifier = Modifier.height(20.dp))
         TextField(
@@ -79,6 +60,14 @@ fun LoginScreen(navigator: DestinationsNavigator) {
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             onValueChange = { password.value = it })
+        Spacer(modifier = Modifier.height(20.dp))
+
+        TextField(
+            label = { Text(text = "Повторите пароль") },
+            value = confirmPassword.value,
+            visualTransformation = PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            onValueChange = { confirmPassword.value = it })
 
         Spacer(modifier = Modifier.height(20.dp))
         Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
@@ -89,7 +78,7 @@ fun LoginScreen(navigator: DestinationsNavigator) {
                     .fillMaxWidth()
                     .height(50.dp)
             ) {
-                Text(text = "Войти")
+                Text(text = "Зарегистрироваться")
             }
         }
 
