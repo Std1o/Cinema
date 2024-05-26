@@ -63,6 +63,7 @@ dependencies {
     implementation libs.coroutines.android
     implementation libs.exoplayer
     implementation libs.datastore.preferences
+    implementation libs.androidx.compose.material
     implementation libs.androidx.core.ktx
     implementation libs.androidx.lifecycle.runtime.ktx
     implementation libs.androidx.activity.compose
