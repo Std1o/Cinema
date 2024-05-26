@@ -120,6 +120,7 @@ fun LoginScreen(navigator: DestinationsNavigator) {
                             ) {
                                 viewModel.setUserAuthorized(true)
                                 viewModel.checkUserAuthorized()
+                                viewModel.setEmail(email.value.text)
                             } else {
                                 scope.launch {
                                     snackbarHostState.showSnackbar("Неверный логин или пароль")

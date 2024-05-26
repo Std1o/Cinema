@@ -31,4 +31,10 @@ class LoginViewModel @Inject constructor(
             repository.setUserAuthorized(authorized)
         }
     }
+
+    fun setEmail(email: String) {
+        viewModelScope.launch {
+            repository.setEmail(email)
+        }
+    }
 }

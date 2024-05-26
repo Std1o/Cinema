@@ -5,4 +5,5 @@ object Constants {
     const val CLIENT_EMAIL = "client@mail.ru"
     const val PASS = "pass"
     const val IS_USER_AUTHORIZED_KEY = "isUserAuthorized"
+    const val EMAIL_KEY = "email"
 }
