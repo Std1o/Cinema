@@ -1,4 +1,4 @@
-package com.example.cinema.presentation.ui.screens
+package com.example.cinema.presentation.ui.screens.main
 
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
@@ -9,7 +9,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.example.cinema.presentation.ui.navigation.BottomBarDestination
-import com.example.cinema.presentation.ui.theme.Purple40
 import com.example.cinema.presentation.ui.theme.Purple80
 import com.ramcosta.composedestinations.generated.NavGraphs
 import com.ramcosta.composedestinations.spec.DestinationSpec
