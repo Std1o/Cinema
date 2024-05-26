@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 val navigator = navController.rememberDestinationsNavigator()
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    DestinationsNavHost(navGraph = NavGraphs.root)
+                    DestinationsNavHost(navGraph = NavGraphs.authRoute)
                 }
             }
         }
