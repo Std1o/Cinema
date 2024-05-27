@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
+import com.example.cinema.presentation.ui.components.LoadingIndicator
 import com.example.cinema.presentation.ui.screens.main.MainScreen
 import com.example.cinema.presentation.ui.theme.CinemaTheme
 import com.example.cinema.presentation.viewmodel.MainActivityViewModel
@@ -26,15 +27,16 @@ class MainActivity : ComponentActivity() {
         setContent {
             CinemaTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    val navController = rememberNavController()
 
                     val viewModel = hiltViewModel<MainActivityViewModel>()
-                    val isUserAuthorized by viewModel.isUserAuthorized.collectAsState()
-                    if (isUserAuthorized) {
+                    val uiState by viewModel.uiState.collectAsState()
+                    if (uiState.isUserAuthorized) {
                         MainScreen()
-                    } else {
+                    } else if (!uiState.isLoading) {
                         DestinationsNavHost(navGraph = NavGraphs.authRoute)
                     }
+
+                    if (uiState.isLoading) LoadingIndicator()
                 }
             }
         }
