@@ -1,19 +1,22 @@
 package com.example.cinema.presentation.ui.screens
 
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,24 +27,24 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.example.cinema.presentation.ui.components.ExoPlayerLifecycleObserver
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.StyledPlayerView
-import com.google.android.exoplayer2.util.Log
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 
 @Destination<RootGraph>
 @Composable
-fun FilmAddingScreen() {
+fun FilmAddingScreen(navigator: DestinationsNavigator) {
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
@@ -90,6 +93,32 @@ fun FilmAddingScreen() {
                         }
                     })
                 }
+            }
+
+            val name = remember { mutableStateOf(TextFieldValue()) }
+            val description = remember { mutableStateOf(TextFieldValue()) }
+
+            Spacer(modifier = Modifier.height(20.dp))
+            TextField(
+                label = { Text(text = "Название фильма") },
+                keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
+                value = name.value,
+                onValueChange = { name.value = it })
+
+            Spacer(modifier = Modifier.height(20.dp))
+            TextField(
+                label = { Text(text = "Описание фильма") },
+                keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
+                value = description.value,
+                onValueChange = { description.value = it })
+
+            Button(
+                modifier = Modifier.padding(vertical = 16.dp),
+                onClick = {
+                    Toast.makeText(context, "Фильм успешно добавлен", Toast.LENGTH_SHORT).show()
+                    navigator.popBackStack()
+                }) {
+                Text("Добавить")
             }
         }
     }
