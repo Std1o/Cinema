@@ -1,5 +1,6 @@
 package com.example.cinema.di
 
+import com.example.cinema.data.AuthInterceptor
 import com.example.cinema.data.api.MoviesApi
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -28,6 +29,7 @@ object NetworkModule {
         OkHttpClient.Builder()
             .callTimeout(1, TimeUnit.MINUTES)
             .retryOnConnectionFailure(true)
+            .addInterceptor(AuthInterceptor())
             .addInterceptor(httpLoggingInterceptor)
 
     @Provides

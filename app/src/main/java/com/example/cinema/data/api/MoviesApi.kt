@@ -6,9 +6,9 @@ import retrofit2.http.Query
 
 
 interface MoviesApi {
-    @GET("movie?token=DW95MF9-94G4Z7G-GRPXR4P-VW7P6XG&field=rating.kp&search=7-10&sortField=votes.kp&sortType=-1&limit=20")
+    @GET("movie?field=rating.kp&search=7-10&sortField=votes.kp&sortType=-1&limit=20")
     suspend fun getMovies(@Query("page") page: Int): MovieResponse
 
-    @GET("movie/search?token=DW95MF9-94G4Z7G-GRPXR4P-VW7P6XG")
+    @GET("movie/search")
     suspend fun searchMovie(@Query("query") query: String): MovieResponse
 }
