@@ -2,12 +2,14 @@ package com.example.cinema.presentation.ui.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.cinema.R
 import com.ramcosta.composedestinations.generated.destinations.MoviesScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.ProfileScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.SubscriptionsScreenDestination
 import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
 
 enum class BottomBarDestination(
@@ -16,5 +18,10 @@ enum class BottomBarDestination(
     @StringRes val label: Int
 ) {
     Movies(MoviesScreenDestination, Icons.Default.Home, R.string.movies_screen),
+    Subscriptions(
+        SubscriptionsScreenDestination,
+        Icons.AutoMirrored.Filled.List,
+        R.string.subscriptions_screen
+    ),
     Profile(ProfileScreenDestination, Icons.Default.Person, R.string.profile_screen),
 }
