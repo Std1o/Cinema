@@ -39,6 +39,7 @@ import coil.compose.AsyncImage
 import com.example.cinema.common.iTems
 import com.example.cinema.domain.models.Subscription
 import com.example.cinema.presentation.ui.components.ConfirmationDialog
+import com.example.cinema.presentation.ui.components.LoadingIndicator
 import com.example.cinema.presentation.ui.theme.Purple40
 import com.example.cinema.presentation.viewmodel.ProfileViewModel
 import com.ramcosta.composedestinations.annotation.Destination
@@ -133,4 +134,5 @@ fun ProfileScreen() {
             dialogText = "Выйти?"
         )
     }
+    if (uiState.isLoading) LoadingIndicator()
 }

@@ -33,7 +33,8 @@ class ProfileViewModel @Inject constructor(
                     it.copy(
                         email = email,
                         id = UUID.randomUUID().toString().take(20),
-                        subscriptions = subscriptionsRepository.getSubscriptions()
+                        subscriptions = subscriptionsRepository.getSubscriptions(),
+                        isLoading = false
                     )
                 }
             }
