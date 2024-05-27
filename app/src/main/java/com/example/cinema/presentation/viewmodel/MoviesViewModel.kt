@@ -25,7 +25,7 @@ class MoviesViewModel @Inject constructor(
 
     private fun getMovies() {
         viewModelScope.launch {
-            val movies = repository.getMovies(1).movies
+            val movies = repository.getMovies(1, null).movies
             _uiState.value = movies
         }
     }
