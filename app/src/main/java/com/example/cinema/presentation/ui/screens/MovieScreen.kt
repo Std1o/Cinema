@@ -11,7 +11,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,15 +18,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.example.cinema.domain.models.Movie
+import com.example.cinema.presentation.ui.components.ExoPlayerLifecycleObserver
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem.fromUri
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.StyledPlayerView
-import com.google.android.exoplayer2.util.Log
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 
@@ -88,30 +85,9 @@ fun MovieScreen(movie: Movie) {
             }
         }
 
-        DisposableEffect(key1 = Unit, effect = {
-            val observer = LifecycleEventObserver { _, event ->
-                when (event) {
-                    Lifecycle.Event.ON_RESUME -> {
-                        Log.e("LIFECYCLE", "resumed")
-                        exoPlayer.play()
-                    }
-
-                    Lifecycle.Event.ON_PAUSE -> {
-                        Log.e("LIFECYCLE", "paused")
-                        exoPlayer.stop()
-                    }
-
-                    else -> {}
-                }
-            }
-
-            val lifecycle = lifecycleOwner.value.lifecycle
-            lifecycle.addObserver(observer)
-
-            onDispose {
-                exoPlayer.release()
-                lifecycle.removeObserver(observer)
-            }
-        })
+        ExoPlayerLifecycleObserver(
+            exoPlayer = exoPlayer,
+            lifecycle = lifecycleOwner.value.lifecycle
+        )
     }
 }

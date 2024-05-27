@@ -29,6 +29,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import com.example.cinema.presentation.ui.components.ExoPlayerLifecycleObserver
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
@@ -93,29 +94,5 @@ fun FilmAddingScreen() {
         }
     }
 
-    DisposableEffect(key1 = Unit, effect = {
-        val observer = LifecycleEventObserver { _, event ->
-            when (event) {
-                Lifecycle.Event.ON_RESUME -> {
-                    Log.e("LIFECYCLE", "resumed")
-                    exoPlayer.play()
-                }
-
-                Lifecycle.Event.ON_PAUSE -> {
-                    Log.e("LIFECYCLE", "paused")
-                    exoPlayer.stop()
-                }
-
-                else -> {}
-            }
-        }
-
-        val lifecycle = lifecycleOwner.value.lifecycle
-        lifecycle.addObserver(observer)
-
-        onDispose {
-            exoPlayer.release()
-            lifecycle.removeObserver(observer)
-        }
-    })
+    ExoPlayerLifecycleObserver(exoPlayer = exoPlayer, lifecycle = lifecycleOwner.value.lifecycle)
 }
