@@ -36,12 +36,14 @@ fun MoviesScreen(navigator: DestinationsNavigator) {
             }
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = { navigator.navigate(FilmAddingScreenDestination()) },
-                shape = CircleShape,
-                modifier = Modifier.padding(bottom = 10.dp, end = 4.dp)
-            ) {
-                Icon(Icons.Filled.Add, "")
+            if (uiState.isUserAdmin) {
+                FloatingActionButton(
+                    onClick = { navigator.navigate(FilmAddingScreenDestination()) },
+                    shape = CircleShape,
+                    modifier = Modifier.padding(bottom = 10.dp, end = 4.dp)
+                ) {
+                    Icon(Icons.Filled.Add, "")
+                }
             }
         }
     ) { contentPadding ->
