@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.cinema.presentation.ui.components.LoadingIndicator
 import com.example.cinema.presentation.ui.components.MoviesList
 import com.example.cinema.presentation.ui.components.SearchAppBar
 import com.example.cinema.presentation.viewmodel.MoviesViewModel
@@ -27,7 +28,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Composable
 fun MoviesScreen(navigator: DestinationsNavigator) {
     val viewModel = hiltViewModel<MoviesViewModel>()
-    val movies by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
     Scaffold(
         topBar = {
             SearchAppBar {
@@ -45,10 +46,11 @@ fun MoviesScreen(navigator: DestinationsNavigator) {
         }
     ) { contentPadding ->
         MoviesList(
-            movies = movies,
+            movies = uiState.movies,
             modifier = Modifier.padding(top = contentPadding.calculateTopPadding())
         ) {
             navigator.navigate(MovieScreenDestination(it))
         }
     }
+    if (uiState.isLoading) LoadingIndicator()
 }
