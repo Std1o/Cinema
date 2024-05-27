@@ -33,4 +33,11 @@ class ProfileViewModel @Inject constructor(
             }
         }
     }
+
+    fun logout() {
+        viewModelScope.launch {
+            repository.setEmail("")
+            repository.setUserAuthorized(false)
+        }
+    }
 }

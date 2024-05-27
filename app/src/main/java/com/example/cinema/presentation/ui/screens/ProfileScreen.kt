@@ -1,5 +1,6 @@
 package com.example.cinema.presentation.ui.screens
 
+import android.app.Activity
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,11 +21,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -32,6 +38,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.cinema.common.iTems
 import com.example.cinema.domain.models.Subscription
+import com.example.cinema.presentation.ui.components.ConfirmationDialog
 import com.example.cinema.presentation.ui.theme.Purple40
 import com.example.cinema.presentation.viewmodel.ProfileViewModel
 import com.ramcosta.composedestinations.annotation.Destination
@@ -42,6 +49,8 @@ import com.ramcosta.composedestinations.annotation.RootGraph
 fun ProfileScreen() {
     val viewModel = hiltViewModel<ProfileViewModel>()
     val uiState by viewModel.uiState.collectAsState()
+    var showLogoutDialog by rememberSaveable { mutableStateOf(false) }
+    val activity = LocalContext.current as Activity
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.padding(vertical = 50.dp, horizontal = 20.dp)) {
@@ -124,11 +133,22 @@ fun ProfileScreen() {
         }
 
         OutlinedButton(
-            onClick = { /*TODO*/ },
+            onClick = { showLogoutDialog = true },
             modifier = Modifier.align(Alignment.BottomCenter).width(200.dp).height(50.dp).padding(bottom = 8.dp),
             border = BorderStroke(1.dp, Purple40),
         ) {
             Text(text = "Выйти", fontSize = 16.sp, color = Purple40)
         }
+    }
+    if (showLogoutDialog) {
+        ConfirmationDialog(
+            onDismissRequest = { showLogoutDialog = false },
+            onConfirmation = {
+                showLogoutDialog = false
+                viewModel.logout()
+                activity.recreate()
+            },
+            dialogText = "Выйти?"
+        )
     }
 }
