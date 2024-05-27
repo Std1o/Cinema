@@ -3,6 +3,7 @@ package com.example.cinema.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cinema.domain.repository.AuthRepository
+import com.example.cinema.domain.repository.SubscriptionsRepository
 import com.example.cinema.presentation.ui.models.ProfileUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val repository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val subscriptionsRepository: SubscriptionsRepository,
 ) : ViewModel() {
 
     init {
@@ -26,9 +28,13 @@ class ProfileViewModel @Inject constructor(
 
     private fun initUIState() {
         viewModelScope.launch {
-            repository.getEmail().collect { email ->
+            authRepository.getEmail().collect { email ->
                 _uiState.update {
-                    it.copy(email = email, id = UUID.randomUUID().toString().take(20))
+                    it.copy(
+                        email = email,
+                        id = UUID.randomUUID().toString().take(20),
+                        subscriptions = subscriptionsRepository.getSubscriptions()
+                    )
                 }
             }
         }
@@ -36,8 +42,8 @@ class ProfileViewModel @Inject constructor(
 
     fun logout() {
         viewModelScope.launch {
-            repository.setEmail("")
-            repository.setUserAuthorized(false)
+            authRepository.setEmail("")
+            authRepository.setUserAuthorized(false)
         }
     }
 }

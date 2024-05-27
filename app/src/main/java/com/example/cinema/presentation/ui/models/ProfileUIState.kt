@@ -1,6 +1,7 @@
 package com.example.cinema.presentation.ui.models
 
 import com.example.cinema.domain.enums.SubscribeType
+import com.example.cinema.domain.models.Subscription
 import java.util.UUID
 
 data class ProfileUIState(
@@ -8,5 +9,6 @@ data class ProfileUIState(
     val id: String = "",
     val email: String = "",
     val phone: String = "88005553535",
-    val subscribeType: SubscribeType = SubscribeType.PREMIUM
+    val subscribeType: SubscribeType = SubscribeType.PREMIUM,
+    val subscriptions: List<Subscription> = emptyList()
 )
