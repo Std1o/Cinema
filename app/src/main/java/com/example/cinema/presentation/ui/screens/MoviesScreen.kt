@@ -44,8 +44,7 @@ fun MoviesScreen(navigator: DestinationsNavigator) {
     Scaffold(
         topBar = {
             SearchAppBar {
-//                viewModel.searchPrefix = it
-//                viewModel.getResults()
+                viewModel.searchMovie(it)
             }
         }
     ) { contentPadding ->
@@ -75,7 +74,7 @@ fun MoviesScreen(navigator: DestinationsNavigator) {
                             .clip(RoundedCornerShape(10.dp))
                     ) {
                         AsyncImage(
-                            model = movie.poster.url,
+                            model = movie.poster.url ?: movie.poster.previewUrl,
                             contentDescription = "Translated description of what the image contains",
                             modifier = Modifier
                                 .fillMaxWidth()

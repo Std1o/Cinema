@@ -29,4 +29,11 @@ class MoviesViewModel @Inject constructor(
             _uiState.value = movies
         }
     }
+
+    fun searchMovie(query: String) {
+        viewModelScope.launch {
+            val movies = repository.searchMovie(query).movies
+            _uiState.value = movies
+        }
+    }
 }

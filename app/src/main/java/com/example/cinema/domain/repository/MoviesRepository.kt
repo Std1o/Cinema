@@ -4,4 +4,5 @@ import com.example.cinema.domain.models.MovieResponse
 
 interface MoviesRepository {
     suspend fun getMovies(page: Int): MovieResponse
+    suspend fun searchMovie(query: String): MovieResponse
 }
