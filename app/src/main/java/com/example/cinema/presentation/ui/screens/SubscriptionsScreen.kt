@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.cinema.common.iTems
+import com.example.cinema.presentation.ui.components.MoviesList
 import com.example.cinema.presentation.ui.components.SearchAppBar
 import com.example.cinema.presentation.viewmodel.MoviesViewModel
 import com.example.cinema.presentation.viewmodel.SubscriptionsViewModel
@@ -39,73 +40,8 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Destination<RootGraph>
 @Composable
-fun SubscriptionsScreen(navigator: DestinationsNavigator) {
+fun SubscriptionsScreen() {
     val viewModel = hiltViewModel<SubscriptionsViewModel>()
     val movies by viewModel.uiState.collectAsState()
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 10.dp)
-    ) {
-        iTems(movies, key = { it }) { movie ->
-            val shape = RoundedCornerShape(5.dp)
-            Card(
-                elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
-                shape = shape,
-                modifier = Modifier
-                    .padding(vertical = 10.dp, horizontal = 16.dp)
-                    .fillMaxWidth()
-                    .clickable {
-                        navigator.navigate(MovieScreenDestination(movie))
-                    }
-            ) {
-                Column(
-                    modifier = Modifier
-                        .padding(vertical = 10.dp, horizontal = 16.dp)
-                        .height(300.dp)
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(10.dp))
-                ) {
-                    AsyncImage(
-                        model = movie.poster.url ?: movie.poster.previewUrl,
-                        contentDescription = "Translated description of what the image contains",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(150.dp)
-                            .clip(RoundedCornerShape(10.dp)),
-                        contentScale = ContentScale.FillWidth
-                    )
-                    Row {
-                        Text(
-                            text = movie.name,
-                            modifier = Modifier.padding(top = 8.dp),
-                            fontSize = 20.sp,
-                            color = Color.White,
-                            style = TextStyle(
-                                shadow = Shadow(
-                                    Color.Black,
-                                    Offset(3.0f, 4.95f),
-                                    1.0f
-                                )
-                            )
-                        )
-                        Text(
-                            text = "• ${movie.year}",
-                            modifier = Modifier.padding(top = 10.dp, start = 8.dp),
-                            color = Color.Gray,
-                        )
-                    }
-                    Text(
-                        text = movie.genres.joinToString { it.name },
-                        color = Color.Gray,
-                    )
-                    Text(
-                        text = movie.shortDescription ?: movie.description,
-                        color = Color.White,
-                        fontSize = 12.sp
-                    )
-                }
-            }
-        }
-    }
+    MoviesList(movies = movies) {}
 }
