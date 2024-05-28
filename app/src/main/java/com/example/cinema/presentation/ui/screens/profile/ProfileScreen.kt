@@ -1,4 +1,4 @@
-package com.example.cinema.presentation.ui.screens
+package com.example.cinema.presentation.ui.screens.profile
 
 import android.app.Activity
 import androidx.compose.foundation.BorderStroke
@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -53,11 +54,15 @@ fun ProfileScreen() {
     val uiState by viewModel.uiState.collectAsState()
     var showLogoutDialog by rememberSaveable { mutableStateOf(false) }
     val activity = LocalContext.current as Activity
+    var showBottomSheet by remember { mutableStateOf(false) }
 
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { },
+                onClick = {
+                    viewModel.getAllSubscriptions()
+                    showBottomSheet = true
+                },
                 shape = CircleShape,
                 modifier = Modifier
                     .height(80.dp)
@@ -163,4 +168,12 @@ fun ProfileScreen() {
         )
     }
     if (uiState.isLoading) LoadingIndicator()
+
+    if (showBottomSheet && uiState.allSubscriptions.isNotEmpty()) {
+        SubscriptionAdding(
+            subscriptions = uiState.allSubscriptions,
+            onDismissRequest = { showBottomSheet = false }) {
+            viewModel.onSubscriptionAdded(it)
+        }
+    }
 }

@@ -6,6 +6,7 @@ import javax.inject.Inject
 
 class SubscriptionsRepositoryImpl @Inject constructor() : SubscriptionsRepository {
     override fun getSubscriptions(): List<Subscription> = userSubscriptions
+    override fun getAllSubscriptions(): List<Subscription> = allSubscriptions
 
     private val userSubscriptions = listOf(
         Subscription(

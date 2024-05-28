@@ -2,6 +2,7 @@ package com.example.cinema.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cinema.domain.models.Subscription
 import com.example.cinema.domain.repository.AuthRepository
 import com.example.cinema.domain.repository.SubscriptionsRepository
 import com.example.cinema.presentation.ui.models.ProfileUIState
@@ -39,6 +40,14 @@ class ProfileViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun getAllSubscriptions() {
+        _uiState.update { it.copy(allSubscriptions = subscriptionsRepository.getAllSubscriptions()) }
+    }
+
+    fun onSubscriptionAdded(subscription: Subscription) {
+        _uiState.update { it.copy(subscriptions = it.subscriptions + subscription) }
     }
 
     fun logout() {

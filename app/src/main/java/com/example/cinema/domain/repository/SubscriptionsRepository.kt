@@ -4,4 +4,5 @@ import com.example.cinema.domain.models.Subscription
 
 interface SubscriptionsRepository {
     fun getSubscriptions(): List<Subscription>
+    fun getAllSubscriptions(): List<Subscription>
 }

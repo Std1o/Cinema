@@ -11,5 +11,6 @@ data class ProfileUIState(
     val phone: String = "88005553535",
     val subscribeType: SubscribeType = SubscribeType.PREMIUM,
     val subscriptions: List<Subscription> = emptyList(),
-    val isLoading: Boolean = true
+    val isLoading: Boolean = true,
+    val allSubscriptions: List<Subscription> = emptyList()
 )
