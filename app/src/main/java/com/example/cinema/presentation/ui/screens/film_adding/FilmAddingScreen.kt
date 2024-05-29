@@ -37,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -126,6 +127,7 @@ fun FilmAddingScreen(navigator: DestinationsNavigator) {
 
                 val name = remember { mutableStateOf(TextFieldValue()) }
                 val description = remember { mutableStateOf(TextFieldValue()) }
+                val year = remember { mutableStateOf(TextFieldValue()) }
 
                 Spacer(modifier = Modifier.height(20.dp))
                 TextField(
@@ -142,6 +144,12 @@ fun FilmAddingScreen(navigator: DestinationsNavigator) {
                     onValueChange = { description.value = it })
                 Text("Жанр", fontSize = 12.sp)
                 GenresDropDown(genres)
+                Spacer(modifier = Modifier.height(20.dp))
+                TextField(
+                    label = { Text(text = "Год") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    value = year.value,
+                    onValueChange = { year.value = it })
 
                 if (imageData == Uri.EMPTY) {
                     Button(
