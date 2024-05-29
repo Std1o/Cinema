@@ -1,4 +1,4 @@
-package com.example.cinema.presentation.ui.screens
+package com.example.cinema.presentation.ui.screens.film_adding
 
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -17,6 +17,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,9 +31,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.example.cinema.presentation.ui.components.ExoPlayerLifecycleObserver
+import com.example.cinema.presentation.viewmodel.FilmAddingViewModel
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
@@ -53,6 +57,8 @@ fun FilmAddingScreen(navigator: DestinationsNavigator) {
     val exoPlayer = ExoPlayer.Builder(context).build().apply {
         prepare()
     }
+    val viewModel = hiltViewModel<FilmAddingViewModel>()
+    val genres by viewModel.genres.collectAsState()
 
     Scaffold(
         snackbarHost = {
@@ -111,6 +117,8 @@ fun FilmAddingScreen(navigator: DestinationsNavigator) {
                 keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
                 value = description.value,
                 onValueChange = { description.value = it })
+            Text("Жанр", fontSize = 12.sp)
+            GenresDropDown(genres)
 
             Button(
                 modifier = Modifier.padding(vertical = 16.dp),
